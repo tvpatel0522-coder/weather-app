@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // WeatherAPI Key
+    // 🔑 Replace this with your new active API Key from weatherapi.com
     const API_KEY = "69c40db26ba8405d8f6213702240808"; 
 
     // DOM Elements
@@ -87,14 +87,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("https://api.weatherapi.com/v1/forecast.json?key=" + API_KEY + "&q=" + encodeURIComponent(city.trim()) + "&days=5&aqi=no&alerts=no");
+            const url = "https://api.weatherapi.com/v1/forecast.json?key=" + API_KEY + "&q=" + encodeURIComponent(city.trim()) + "&days=5&aqi=no&alerts=no";
+            const response = await fetch(url);
+            const data = await response.json();
             
             if (!response.ok) {
-                alert("City not found! Please check spelling.");
+                if (data.error && data.error.code === 2006) {
+                    alert("Invalid API Key! Please update your WeatherAPI Key in app.js.");
+                } else if (data.error && data.error.message) {
+                    alert(data.error.message);
+                } else {
+                    alert("City not found! Please check spelling.");
+                }
                 return;
             }
-
-            const data = await response.json();
 
             // Update Current Weather Details
             if (cityDisplay) cityDisplay.textContent = data.location.name + ", " + data.location.country;
@@ -151,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (error) {
             console.error("Error fetching weather:", error);
-            alert("Unable to fetch weather data. Please try again!");
+            alert("Unable to fetch weather data. Please check your internet or API key!");
         }
     }
 
