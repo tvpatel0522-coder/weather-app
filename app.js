@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 🔑 Replace this with your new active API Key from weatherapi.com
-    const API_KEY = "69c40db26ba8405d8f6213702240808"; 
+    const API_KEY = "86a19080ff55477a85a182235261308"; 
 
     // DOM Elements
     const startBtn = document.getElementById("start-btn");
