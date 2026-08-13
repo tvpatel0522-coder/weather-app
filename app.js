@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================
 
     const BACKEND_URL =
-        "https://weather-backend-2aol.onrender.com/";
+        "weather-app-l4u6.onrender.com";
 
 
     // =========================
