@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const url = "https://api.weatherapi.com/v1/forecast.json?key=" + API_KEY + "&q=" + encodeURIComponent(city.trim()) + "&days=5&aqi=no&alerts=no";
+            const url = "https://weather-backend-2aol.onrender.com/api/weather?city=" + encodeURIComponent(city.trim());
             const response = await fetch(url);
             const data = await response.json();
             
