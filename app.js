@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // 🔑 Replace this with your new active API Key from weatherapi.com
-    const API_KEY = "86a19080ff55477a85a182235261308"; 
+    const BACKEND_URL= "https://weather-backend-2aol.onrender.com"; 
 
     // DOM Elements
     const startBtn = document.getElementById("start-btn");
