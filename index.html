@@ -134,7 +134,7 @@
 
   <script>
     // ⚠️ Replace with your actual OpenWeatherMap API key
-    const apiKey = "YOUR_API_KEY"; 
+    const apiKey = "86a19080ff55477a85a182235261308"; 
 
     async function getWeather() {
       const cityInput = document.getElementById("cityInput");
@@ -151,7 +151,7 @@
         return;
       }
 
-      const url = "https://api.openweathermap.org/data/2.5/weather?q=" + encodeURIComponent(city) + "&appid=" + apiKey + "&units=metric";
+      const url = "https://weather-backend-2aol.onrender.com" + encodeURIComponent(city) + "&appid=" + apiKey + "&units=metric";
 
       try {
         const response = await fetch(url);
