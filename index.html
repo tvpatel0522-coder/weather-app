@@ -1,198 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather Forecast</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background-color: #0d7c85;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      color: #fff;
-    }
-
-    .container {
-      text-align: center;
-      max-width: 480px;
-      width: 90%;
-    }
-
-    .header-title {
-      font-size: 2.2rem;
-      margin-bottom: 20px;
-    }
-
-    .search-box {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .search-box input {
-      flex: 1;
-      padding: 12px 18px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    .search-box button {
-      padding: 12px 24px;
-      font-size: 1rem;
-      background-color: #00b4d8;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .search-box button:hover {
-      background-color: #0096c7;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 30px 20px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .error-msg {
-      color: #ff6b6b;
-      background: rgba(255, 107, 107, 0.2);
-      border: 1px solid #ff6b6b;
-      padding: 12px;
-      border-radius: 8px;
-      display: none;
-      font-size: 0.95rem;
-    }
-
-    .weather-info {
-      display: none;
-    }
-
-    .weather-info h2 {
-      font-size: 1.8rem;
-    }
-
-    .temp {
-      font-size: 3rem;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-
-    .details {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
-      font-size: 0.95rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast System</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Canvas for Background -->
+    <canvas id="bg-canvas"></canvas>
 
-  <div class="container">
-    <h1 class="header-title">☀️ Weather Forecast</h1>
-    
-    <div class="search-box">
-      <input type="text" id="cityInput" placeholder="Enter city name..." autocomplete="off" />
-      <button onclick="getWeather()">Search</button>
-    </div>
-
-    <div class="card">
-      <div id="welcomeBox">
-        <h2>Welcome to Weather Forecast</h2>
-        <p style="margin-top: 10px; font-size: 0.9rem;">Start by entering a city above.</p>
-      </div>
-
-      <div id="errorBox" class="error-msg"></div>
-
-      <div id="weatherBox" class="weather-info">
-        <h2 id="cityName">--</h2>
-        <div class="temp" id="temp">--°C</div>
-        <p id="weatherDesc">--</p>
-        <div class="details">
-          <p>💧 Humidity: <span id="humidity">--</span>%</p>
-          <p>💨 Wind: <span id="wind">--</span> m/s</p>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar" style="display: none;">
+        <div class="nav-brand">☀️ Weather Forecast</div>
+        <div class="nav-links">
+            <a href="#" id="nav-home" class="active">Home</a>
+            <a href="#" id="nav-about">About</a>
         </div>
-      </div>
+    </nav>
+
+    <!-- Main Application Area -->
+    <div id="app">
+        
+        <!-- STEP 1: WELCOME SCREEN -->
+        <div id="welcome-view" class="view-container">
+            <div class="card welcome-initial-card">
+                <div class="icon">☀️</div>
+                <h2>Welcome to Weather App</h2>
+                <p>Get real-time weather updates and 5-day forecasts easily.</p>
+                <button id="start-btn" class="btn btn-login">Get Started</button>
+            </div>
+        </div>
+
+        <!-- STEP 2: LOGIN CARD -->
+        <div id="login-view" class="view-container" style="display: none;">
+            <div class="card login-card">
+                <div class="icon">🔐</div>
+                <h2>Sign In</h2>
+                <p>Continue with your Google account</p>
+                
+                <button id="google-login-btn" class="google-btn">
+                    <svg width="18" height="18" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    Sign in with Google
+                </button>
+            </div>
+        </div>
+
+        <!-- GOOGLE CHOOSE AN ACCOUNT MODAL POPUP -->
+        <div id="google-modal" class="modal-overlay" style="display: none;">
+            <div class="google-modal-box">
+                <div class="g-header">
+                    <svg width="20" height="20" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    <span>Sign in with Google</span>
+                </div>
+                
+                <h2 class="g-title">Choose an account</h2>
+                <p class="g-subtitle">to continue to <span>weather-backend-2oal.onrender.com</span></p>
+
+                <div class="account-list">
+                    <div class="account-item select-account">
+                        <div class="avatar avatar-orange">T</div>
+                        <div class="account-info">
+                            <div class="name">Tisha Patel</div>
+                            <div class="email">tvpatel0522@gmail.com</div>
+                        </div>
+                    </div>
+
+                    <div class="account-item select-account">
+                        <div class="avatar avatar-gray">T</div>
+                        <div class="account-info">
+                            <div class="name">Tisha</div>
+                            <div class="email">tpatel1142023@gmail.com</div>
+                        </div>
+                    </div>
+
+                    <div class="account-item select-account">
+                        <div class="avatar avatar-teal">T</div>
+                        <div class="account-info">
+                            <div class="name">Tisha</div>
+                            <div class="email">sitapatel1104@gmail.com</div>
+                        </div>
+                    </div>
+
+                    <div class="account-item select-account">
+                        <div class="avatar avatar-blue">G</div>
+                        <div class="account-info">
+                            <div class="name">Goddessbhakti</div>
+                            <div class="email">goddessbhakti96@gmail.com</div>
+                        </div>
+                    </div>
+
+                    <div class="account-item select-account">
+                        <div class="avatar avatar-icon">👤</div>
+                        <div class="account-info">
+                            <div class="name" style="font-weight: 500;">Use another account</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: WEATHER DASHBOARD -->
+        <div id="home-view" class="view-container" style="display: none;">
+            <h1 class="main-title">☀️ Weather Forecast</h1>
+            
+            <div class="search-box">
+                <input type="text" id="city-input" placeholder="Enter City" value="Surat">
+                <button id="search-btn" class="btn btn-search">Search</button>
+            </div>
+
+            <!-- Welcome Banner inside Dashboard -->
+            <div id="welcome-card" class="card welcome-card">
+                <h2>☀️ Welcome to Weather Forecast</h2>
+                <p>Search any city around the world and get real-time weather updates, humidity, wind speed, pressure, visibility, and a 5-day forecast.</p>
+                <div class="weather-icons">☀️ 🌤️ 🌥️ 🌧️ 🌩️ ❄️</div>
+                <p class="hint">🔍 Start by entering a city above.</p>
+            </div>
+
+            <!-- Weather Details Results -->
+            <div id="weather-results" style="display: none;">
+                <div class="section-heading">🌍 Current Weather</div>
+                <div class="card current-weather-card">
+                    <div id="weather-icon" class="weather-main-icon">🌧️</div>
+                    <div id="temp-display" class="temp-text">26.8°C</div>
+                    <div id="city-display" class="city-name">Surat</div>
+                    <div id="condition-display" class="condition-text">Patchy light drizzle</div>
+                    
+                    <div class="weather-details-grid">
+                        <div class="detail-item">
+                            <span class="icon">💧</span>
+                            <strong>Humidity</strong>
+                            <span id="humidity-val">87%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="icon">💨</span>
+                            <strong>Wind</strong>
+                            <span id="wind-val">20.5 km/h</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="icon">🌡️</span>
+                            <strong>Pressure</strong>
+                            <span id="pressure-val">1003 mb</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="icon">👁️</span>
+                            <strong>Visibility</strong>
+                            <span id="vis-val">5 km</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-heading">📅 5-Day Forecast</div>
+                <div class="forecast-grid" id="forecast-container"></div>
+            </div>
+        </div>
+
+        <!-- STEP 4: ABOUT VIEW (3-COLUMN GRID) -->
+        <div id="about-view" class="view-container" style="display: none;">
+            <div class="about-header">
+                <span class="info-icon">ℹ️</span>
+                <h1>About Weather Forecast System</h1>
+            </div>
+            <p class="about-desc">
+                The Weather Forecast System is a React-based web application that provides users with real-time weather information and a 5-day weather forecast for any city.
+            </p>
+
+            <h2 class="sub-heading">✨ Features</h2>
+            <div class="pill-grid">
+                <div class="pill">☀️ Search weather by city name</div>
+                <div class="pill">🌡️ Current temperature</div>
+                <div class="pill">💧 Humidity</div>
+                <div class="pill">💨 Wind speed</div>
+                <div class="pill">🌍 Country information</div>
+                <div class="pill">📅 5-Day Weather Forecast</div>
+                <div class="pill">📱 Responsive UI</div>
+            </div>
+
+            <h2 class="sub-heading">🛠️ Technologies Used</h2>
+            <div class="pill-grid">
+                <div class="pill">⚛️ React.js</div>
+                <div class="pill">⚡ Vite</div>
+                <div class="pill">🎨 CSS3</div>
+                <div class="pill">🔀 React Router</div>
+                <div class="pill">📡 Axios</div>
+                <div class="pill">🟢 Node.js</div>
+                <div class="pill">🚀 Express.js</div>
+                <div class="pill">🍃 MongoDB</div>
+                <div class="pill">🔴 Redis Cloud</div>
+                <div class="pill">🐂 Bull Queue</div>
+                <div class="pill">🔌 Socket.IO</div>
+                <div class="pill">🔑 Passport.js</div>
+                <div class="pill">🔐 JWT Authentication</div>
+                <div class="pill">🌐 Google OAuth 2.0</div>
+                <div class="pill">☁️ WeatherAPI</div>
+                <div class="pill">🔗 REST APIs</div>
+                <div class="pill">▲ Vercel</div>
+                <div class="pill">🧵 Render</div>
+            </div>
+        </div>
+
     </div>
-  </div>
 
-  <script>
-    // ⚠️ Replace with your actual OpenWeatherMap API key
-    const apiKey = "86a19080ff55477a85a182235261308"; 
-
-    async function getWeather() {
-      const cityInput = document.getElementById("cityInput");
-      const city = cityInput.value.trim();
-
-      const welcomeBox = document.getElementById("welcomeBox");
-      const errorBox = document.getElementById("errorBox");
-      const weatherBox = document.getElementById("weatherBox");
-
-      errorBox.style.display = "none";
-
-      if (city === "") {
-        showError("Please enter a city name.");
-        return;
-      }
-
-      const url = "https://weather-backend-2aol.onrender.com" + encodeURIComponent(city) + "&appid=" + apiKey + "&units=metric";
-
-      try {
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error("City not found. Please check the spelling.");
-          } else {
-            throw new Error("Something went wrong. Please check your API key.");
-          }
-        }
-
-        const data = await response.json();
-
-        welcomeBox.style.display = "none";
-        weatherBox.style.display = "block";
-
-        document.getElementById("cityName").innerText = data.name + ", " + data.sys.country;
-        document.getElementById("temp").innerText = Math.round(data.main.temp) + "°C";
-        document.getElementById("weatherDesc").innerText = data.weather[0].description;
-        document.getElementById("humidity").innerText = data.main.humidity;
-        document.getElementById("wind").innerText = data.wind.speed;
-
-      } catch (error) {
-        welcomeBox.style.display = "none";
-        weatherBox.style.display = "none";
-        showError(error.message);
-      }
-    }
-
-    function showError(message) {
-      const errorBox = document.getElementById("errorBox");
-      errorBox.innerText = message;
-      errorBox.style.display = "block";
-    }
-
-    document.getElementById("cityInput").addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        getWeather();
-      }
-    });
-  </script>
+    <script src="background.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
